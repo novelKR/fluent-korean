@@ -1,0 +1,5 @@
+interface:
+  display_name: "fluent-korean-not-coding"
+  short_description: "명확한 한국어 출력 (코딩 지침 없음)"
+policy:
+  allow_implicit_invocation: false
