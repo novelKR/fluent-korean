@@ -67,6 +67,11 @@ Claude Code 환경에 적합한 Plugin이지만, 글쓰기 지침에 해당하�
 `fluent-korean-not-coding` : 코딩 지침이 제거되어 있습니다. Claude가 직접 코드를 변경하지 않을 때 사용하세요.
 
 
+## 여러 에이전트에서 쓰기
+
+Cursor, Codex, Muse Code, grok-build에서 같은 지침을 skill로 쓰는 방법과, Claude Code output-style과의 관계는 [docs/multi-agent.md](docs/multi-agent.md)에 정리했습니다. 사용자 전역 연결은 `scripts/install-user.sh`입니다.
+
+
 ## Claude Code CLI 외 다른 환경에서 사용하는 방법
 
 기본적인 원리는 간단합니다. `plugins/fluent-korean/output-styles/`의 md 파일 중 원하는 것을 선택해서, 파일 본문을 적절한 자리에 삽입하면 됩니다.
