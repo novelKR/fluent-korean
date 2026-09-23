@@ -1,3 +1,40 @@
+# fluent-korean
+
+이 저장소는 [snflkd/fluent-korean](https://github.com/snflkd/fluent-korean)을 [novelKR](https://github.com/novelKR)이 포크한 것입니다. 원작자는 [snflkd](https://github.com/snflkd)입니다. 원작자가 작성한 Claude Code용 output-style과, 이 문서 아래의 원본 README는 수정하지 않았습니다.
+
+지금 읽고 있는 이 앞부분은, 같은 지침을 Claude Code 외의 환경에서도 적용할 수 있도록 보정한 버전입니다. 여기서 보정은 지침 문장을 다시 쓰는 작업이 아닙니다. Cursor, Codex, Muse Code, grok-build가 읽는 Agent Skills 형식의 skill을 추가한 작업입니다.
+
+## Claude Code 외 설치 방법
+
+Cursor, Codex, Muse Code, grok-build에서 이 지침을 모든 프로젝트에 적용하려면, 이 저장소를 클론한 뒤 저장소 루트에서 다음 명령을 실행합니다.
+
+```bash
+scripts/install-user.sh
+```
+
+이 명령은 다음 심볼릭 링크를 만듭니다.
+
+- `~/.agents/skills/fluent-korean`은 코딩 작업용 skill입니다. 위 네 도구는 `~/.agents/skills/`를 읽습니다. 링크를 만든 뒤 새 세션을 열면, 한국어 응답에 이 skill이 적용됩니다.
+- `~/.agents/skills/fluent-korean-not-coding`은 코드를 직접 수정하지 않는 글쓰기용 skill입니다. `/fluent-korean-not-coding`이라고 명시했을 때만 적용됩니다.
+- `~/.claude/output-styles/fluent-korean.md`와 `~/.claude/output-styles/fluent-korean-not-coding.md`는 Claude Code용 output-style 원문입니다. Claude Code는 `.agents/skills/`를 읽지 않으므로, 이 경로로 원문을 연결합니다.
+
+`~/.cursor/skills/`, `~/.codex/skills/`, `~/.grok/skills/`에는 파일을 복사하지 않습니다. Cursor, Codex, Muse Code, grok-build는 `~/.agents/skills/`를 이미 읽기 때문입니다.
+
+한 저장소에서만 사용하려면 위 명령을 실행하지 않아도 됩니다. 그 저장소의 루트에 있는 `.agents/skills/`를 Cursor, Codex, Muse Code, grok-build가 발견합니다.
+
+이미 같은 경로에 심볼릭 링크가 있으면, 스크립트는 그 링크가 이 클론을 가리키도록 바꿉니다. 일반 파일이나 디렉터리가 있으면 덮어쓰지 않고 중단합니다.
+
+upstream의 output-style이 바뀌면, 그 변경을 가져온 뒤에 `python3 scripts/sync_skills.py`를 실행합니다. 이 스크립트는 원문 본문을 요약하거나 고치지 않고 skill 파일로 다시 씁니다. 같은 절차를 [docs/multi-agent.md](docs/multi-agent.md)에도 적어 두었습니다.
+
+Claude Code 플러그인 설치는 아래 원본 README의 설치 안내를 따릅니다. 이 포크의 output-style을 Claude Code에 연결하려면, 위 스크립트가 만든 `~/.claude/output-styles/`의 파일을 사용합니다. `/config`에서 output-style 항목을 `fluent-korean`으로 선택한 뒤, 새 세션을 시작하거나 `/clear`를 실행합니다. output-style을 선택한 상태에서는 같은 지침을 Claude Code의 skill 디렉터리에 다시 넣지 않아야 합니다. 같은 본문이 한 세션의 프롬프트에 두 번 포함되기 때문입니다.
+
+## 문서의 구성
+
+- 이 절까지가 이 포크에서 추가한 내용입니다.
+- 다음 절인 원본 README는 snflkd가 작성한 글을 수정하지 않고 그대로 둔 부분입니다. 원본 말미에는, 그 한국어 부분을 국어국문학 전공자가 손으로 작성한 뒤에 AI의 자문을 받아 수정했다는 문장이 있습니다. 그 문장은 원본 README에만 해당합니다.
+
+## 원본 README
+
 # fluent-korean (Claude Code output-style)
 
 이 플러그인은 LLM, 특히 클로드와 코딩 에이전트가 명확한 한국어를 유창하게 구사하도록 지시하는 출력 스타일을 제공합니다.
@@ -65,11 +102,6 @@ Claude Code 환경에 적합한 Plugin이지만, 글쓰기 지침에 해당하�
 
 `fluent-korean` : 코딩 지침을 유지합니다. 코딩 작업에 사용하세요.
 `fluent-korean-not-coding` : 코딩 지침이 제거되어 있습니다. Claude가 직접 코드를 변경하지 않을 때 사용하세요.
-
-
-## 여러 에이전트에서 쓰기
-
-Cursor, Codex, Muse Code, grok-build에서 같은 지침을 skill로 쓰는 방법과, Claude Code output-style과의 관계는 [docs/multi-agent.md](docs/multi-agent.md)에 정리했습니다. 사용자 전역 연결은 `scripts/install-user.sh`입니다.
 
 
 ## Claude Code CLI 외 다른 환경에서 사용하는 방법
