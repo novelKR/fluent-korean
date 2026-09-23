@@ -2,31 +2,41 @@
 
 이 저장소는 [snflkd/fluent-korean](https://github.com/snflkd/fluent-korean)을 [novelKR](https://github.com/novelKR)이 포크한 것입니다. 원작자는 [snflkd](https://github.com/snflkd)입니다. 원작자가 작성한 Claude Code용 output-style과, 이 문서 아래의 원본 README는 수정하지 않았습니다.
 
-지금 읽고 있는 이 앞부분은, 같은 지침을 Claude Code 외의 환경에서도 적용할 수 있도록 보정한 버전입니다. 여기서 보정은 지침 문장을 다시 쓰는 작업이 아닙니다. Cursor, Codex, Muse Code, grok-build가 읽는 Agent Skills 형식의 skill을 추가한 작업입니다.
+지금 읽고 있는 이 앞부분은, 같은 지침을 Claude Code 외의 환경에서도 적용할 수 있도록 보정한 버전입니다. 여기서 보정은 지침 문장을 다시 쓰는 작업이 아닙니다. Cursor, Codex, Muse Code, grok-build, Gemini CLI, Pi, Kimi Code CLI가 읽는 Agent Skills 형식의 skill을 추가한 작업입니다.
+
+설치에 사용하는 저장소는 도구마다 다릅니다. Claude Code는 원본 저장소 [snflkd/fluent-korean](https://github.com/snflkd/fluent-korean)만 사용합니다. Cursor, Codex, Muse Code, grok-build, Gemini CLI, Pi, Kimi Code CLI는 이 포크 [novelKR/fluent-korean](https://github.com/novelKR/fluent-korean)만 사용합니다.
 
 ## Claude Code 외 설치 방법
 
-Cursor, Codex, Muse Code, grok-build에서 이 지침을 모든 프로젝트에 적용하려면, 이 저장소를 클론한 뒤 저장소 루트에서 다음 명령을 실행합니다.
+직접 명령을 실행해도 됩니다. 원본 README와 같이, 현재 사용 중인 LLM에게 GitHub 링크가 포함된 한 문장을 건네는 방법도 사용할 수 있습니다.
 
-```bash
-scripts/install-user.sh
+Claude Code라면 이 포크를 열지 말고, 다음 문장을 LLM에게 전달합니다.
+
+```
+https://github.com/snflkd/fluent-korean/ 링크 README 읽고, 설치 안내 단락 읽고 어떻게 설치해서 사용할지 설명해줘
 ```
 
-이 명령은 다음 심볼릭 링크를 만듭니다.
+Cursor, Codex, Muse Code, grok-build라면 원본 저장소를 설치 원본으로 쓰지 말고, 다음 문장을 LLM에게 전달합니다.
 
-- `~/.agents/skills/fluent-korean`은 코딩 작업용 skill입니다. 위 네 도구는 `~/.agents/skills/`를 읽습니다. 링크를 만든 뒤 새 세션을 열면, 한국어 응답에 이 skill이 적용됩니다.
-- `~/.agents/skills/fluent-korean-not-coding`은 코드를 직접 수정하지 않는 글쓰기용 skill입니다. `/fluent-korean-not-coding`이라고 명시했을 때만 적용됩니다.
-- `~/.claude/output-styles/fluent-korean.md`와 `~/.claude/output-styles/fluent-korean-not-coding.md`는 Claude Code용 output-style 원문입니다. Claude Code는 `.agents/skills/`를 읽지 않으므로, 이 경로로 원문을 연결합니다.
+```
+https://github.com/novelKR/fluent-korean/ 링크 README 읽고, Claude Code 외 설치 방법 단락 읽고 어떻게 설치해서 사용할지 설명해줘
+```
 
-`~/.cursor/skills/`, `~/.codex/skills/`, `~/.grok/skills/`에는 파일을 복사하지 않습니다. Cursor, Codex, Muse Code, grok-build는 `~/.agents/skills/`를 이미 읽기 때문입니다.
+이 단락을 읽은 LLM은 사용자의 도구를 먼저 확인한 뒤에, 클론한 저장소의 루트에서 `scripts/install-user.sh --harness <선택지>`를 실행합니다. 클론 주소는 `https://github.com/novelKR/fluent-korean.git`입니다. 선택지 목록은 `scripts/install-user.sh --list`가 출력합니다.
 
-한 저장소에서만 사용하려면 위 명령을 실행하지 않아도 됩니다. 그 저장소의 루트에 있는 `.agents/skills/`를 Cursor, Codex, Muse Code, grok-build가 발견합니다.
+1. 도구가 Claude Code이면 `scripts/install-user.sh --harness claude`를 실행합니다. 이 선택지는 skill 파일을 연결하지 않고, 위의 원본 저장소 문장을 출력합니다. 예전에 이 포크가 `~/.claude/output-styles/`에 만들어 둔 심볼릭 링크가 있으면 그 링크만 제거합니다.
+2. 도구가 Cursor의 로컬 세션, Codex, Muse Code, grok-build, Gemini CLI, Pi이면 `scripts/install-user.sh --harness agents`를 실행합니다. Kimi Code CLI도 `~/.config/agents/skills/`가 없으면 같은 선택지를 사용합니다. 대상 경로는 `~/.agents/skills/`입니다.
+3. Cursor Cloud Agent나 원격 워커로 skill을 동기화하려면 `scripts/install-user.sh --harness cursor-cloud`를 실행합니다. 대상 경로는 `~/.cursor/skills/`입니다.
+4. `~/.config/agents/skills/`가 있는 Kimi Code CLI이면 `scripts/install-user.sh --harness kimi-config`를 실행합니다. 그 디렉터리가 있으면 Kimi는 `~/.agents/skills/`를 읽지 않습니다.
+5. 여러 경로가 필요하면 `scripts/install-user.sh --harness agents,cursor-cloud`처럼 쉼표로 지정합니다.
 
-이미 같은 경로에 심볼릭 링크가 있으면, 스크립트는 그 링크가 이 클론을 가리키도록 바꿉니다. 일반 파일이나 디렉터리가 있으면 덮어쓰지 않고 중단합니다.
+`agents`, `cursor-cloud`, `kimi-config`는 `fluent-korean`과 `fluent-korean-not-coding`을 고른 경로에 심볼릭 링크로 연결합니다. 링크를 만든 뒤 새 세션을 열면 `fluent-korean`이 한국어 응답에 적용됩니다. `fluent-korean-not-coding`은 `/fluent-korean-not-coding`이라고 명시했을 때만 적용됩니다.
+
+터미널에서 인자를 생략하면 번호로 고르는 메뉴가 나옵니다. 터미널이 아니면 `--harness`가 필요합니다. 이미 같은 경로에 심볼릭 링크가 있으면, 스크립트는 그 링크가 이 클론을 가리키도록 바꿉니다. 일반 파일이나 디렉터리가 있으면 덮어쓰지 않고 중단합니다.
+
+한 저장소에서만 사용하려면 전역 링크를 만들지 않아도 됩니다. 그 저장소에서 이 포크를 열면, 루트의 `.agents/skills/`를 `agents` 선택지에 해당하는 하네스가 발견합니다.
 
 upstream의 output-style이 바뀌면, 그 변경을 가져온 뒤에 `python3 scripts/sync_skills.py`를 실행합니다. 이 스크립트는 원문 본문을 요약하거나 고치지 않고 skill 파일로 다시 씁니다. 같은 절차를 [docs/multi-agent.md](docs/multi-agent.md)에도 적어 두었습니다.
-
-Claude Code 플러그인 설치는 아래 원본 README의 설치 안내를 따릅니다. 이 포크의 output-style을 Claude Code에 연결하려면, 위 스크립트가 만든 `~/.claude/output-styles/`의 파일을 사용합니다. `/config`에서 output-style 항목을 `fluent-korean`으로 선택한 뒤, 새 세션을 시작하거나 `/clear`를 실행합니다. output-style을 선택한 상태에서는 같은 지침을 Claude Code의 skill 디렉터리에 다시 넣지 않아야 합니다. 같은 본문이 한 세션의 프롬프트에 두 번 포함되기 때문입니다.
 
 ## 문서의 구성
 

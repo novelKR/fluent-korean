@@ -1,6 +1,6 @@
 # 여러 에이전트에서 쓰기
 
-Claude Code의 output-style 원문은 `plugins/fluent-korean/output-styles/`에 그대로 있습니다. Cursor, Codex, Muse Code, grok-build가 함께 읽는 공용 형식은 [Agent Skills](https://agentskills.io/specification)의 `SKILL.md`이고, 이 저장소에서는 `.agents/skills/`에 둡니다.
+Claude Code의 output-style 원문은 `plugins/fluent-korean/output-styles/`에 그대로 있습니다. Cursor, Codex, Muse Code, grok-build, Gemini CLI, Pi, Kimi Code CLI가 함께 읽는 공용 형식은 [Agent Skills](https://agentskills.io/specification)의 `SKILL.md`이고, 이 저장소에서는 `.agents/skills/`에 둡니다.
 
 | skill | 언제 쓰나 |
 | --- | --- |
@@ -15,39 +15,37 @@ python3 scripts/sync_skills.py
 
 ## 사용자 전역 연결
 
-이 클론을 모든 프로젝트에서 쓰려면 저장소 루트에서 다음을 실행합니다.
+이 포크를 클론한 뒤, 도구에 맞는 선택지로 설치합니다. 클론 주소는 `https://github.com/novelKR/fluent-korean.git`입니다. 선택지 목록은 `scripts/install-user.sh --list`가 출력합니다.
 
 ```bash
-scripts/install-user.sh
+scripts/install-user.sh --harness agents
+scripts/install-user.sh --harness cursor-cloud
+scripts/install-user.sh --harness kimi-config
+scripts/install-user.sh --harness claude
+scripts/install-user.sh --harness agents,cursor-cloud
 ```
 
-스크립트는 다음 심볼릭 링크만 만듭니다.
+- `agents`는 `~/.agents/skills/`에 연결합니다. Cursor의 로컬 세션, Codex, Muse Code, grok-build, Gemini CLI, Pi가 이 경로를 읽습니다. Kimi Code CLI는 `~/.config/agents/skills/`가 없을 때만 이 경로를 읽습니다.
+- `cursor-cloud`는 `~/.cursor/skills/`에 연결합니다. Cursor Cloud Agent와 원격 워커가 동기화하는 경로입니다.
+- `kimi-config`는 `~/.config/agents/skills/`에 연결합니다. 이 디렉터리가 있으면 Kimi는 `~/.agents/skills/`를 읽지 않습니다.
+- `claude`는 skill 파일을 연결하지 않습니다. 원본 저장소 문장을 출력하고, 이 포크를 가리키던 `~/.claude/output-styles/` 심볼릭 링크만 제거합니다.
 
-- `~/.agents/skills/fluent-korean`
-- `~/.agents/skills/fluent-korean-not-coding`
-- `~/.claude/output-styles/fluent-korean.md`
-- `~/.claude/output-styles/fluent-korean-not-coding.md`
+파일을 연결하는 선택지는 `fluent-korean`과 `fluent-korean-not-coding`을 심볼릭 링크로 둡니다. 이미 심볼릭 링크가 있으면 이 클론을 가리키도록 바꿉니다. 일반 파일이나 디렉터리가 있으면 덮어쓰지 않고 중단합니다. 터미널에서 인자를 생략하면 메뉴가 나오고, 터미널이 아니면 `--harness`가 필요합니다.
 
-Cursor, Codex, Muse Code, grok-build는 `~/.agents/skills/`를 읽습니다. 그래서 `~/.cursor/skills/`, `~/.codex/skills/`, `~/.grok/skills/`에는 따로 넣지 않습니다. 링크가 생긴 뒤 새 세션을 열면 `fluent-korean`이 한국어 응답에 적용됩니다.
+원본 README와 같이, LLM에게 아래 문장을 건네도 이 절차를 안내받을 수 있습니다.
 
-이미 같은 경로에 심볼릭 링크가 있으면 이 클론을 가리키도록 바꿉니다. 일반 파일이나 디렉터리가 있으면 덮어쓰지 않고 중단합니다.
+```
+https://github.com/novelKR/fluent-korean/ 링크 README 읽고, Claude Code 외 설치 방법 단락 읽고 어떻게 설치해서 사용할지 설명해줘
+```
 
 ## Claude Code
 
-Claude Code는 `.agents/skills/`를 읽지 않습니다. 항상 적용되는 경로는 output-style입니다.
+Claude Code의 설치 원본은 이 포크가 아니라 [snflkd/fluent-korean](https://github.com/snflkd/fluent-korean)입니다. 이 포크의 파일로 output-style이나 skill을 설치하지 않습니다. LLM에게 아래 문장을 건넵니다.
 
-1. 플러그인을 쓰려면 Claude Code에서 아래를 실행합니다. 마켓플레이스 이름은 이 포크가 아니라 원저장소 기준입니다. 포크의 output-style 파일을 직접 쓰려면 2번을 사용합니다.
-
-   ```
-   /plugin marketplace add snflkd/fluent-korean
-   /plugin install fluent-korean@fluent-korean
-   ```
-
-2. `scripts/install-user.sh`를 실행했다면 `~/.claude/output-styles/`에 두 파일이 연결되어 있습니다. `/config`에서 output-style을 `fluent-korean`으로 고릅니다. 코딩 지침을 빼려면 `fluent-korean-not-coding`을 고릅니다.
-3. output-style은 고른 뒤에 새 세션을 시작하거나 `/clear`를 해야 적용됩니다.
-
-Claude Code에서 output-style을 켠 상태에서는 같은 지침을 skill로 또 넣지 않습니다. 본문이 세션에 두 번 들어갑니다. `~/.claude/skills/`에는 링크하지 않습니다.
+```
+https://github.com/snflkd/fluent-korean/ 링크 README 읽고, 설치 안내 단락 읽고 어떻게 설치해서 사용할지 설명해줘
+```
 
 ## 프로젝트 안에서만 쓰기
 
-전역 링크 없이, 이 저장소를 연 세션에서만 쓰려면 `.agents/skills/`가 이미 그 역할입니다. Cursor, Codex, Muse Code, grok-build는 저장소 루트의 `.agents/skills/`를 발견합니다.
+전역 링크 없이, 이 저장소를 연 세션에서만 쓰려면 `.agents/skills/`가 이미 그 역할입니다. Cursor의 로컬 세션, Codex, Muse Code, grok-build, Gemini CLI, Pi는 저장소 루트의 `.agents/skills/`를 발견합니다.
