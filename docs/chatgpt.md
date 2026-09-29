@@ -19,9 +19,25 @@ python3 scripts/sync_skills.py
 
 ChatGPT용 `SKILL.md`의 frontmatter에는 `name`과 `description`만 둡니다. UI 메타데이터는 각 skill의 `agents/openai.yaml`에 둡니다.
 
-## 업로드용 ZIP 만들기
+## GitHub Release에서 받기
 
-다음을 실행합니다.
+기본 배포 경로는 GitHub Release입니다. Release를 발행하면 `.github/workflows/chatgpt-skill-release.yml`이 `release.published` 이벤트에서 실행됩니다. 워크플로는 발행한 태그를 checkout한 뒤 `scripts/package_chatgpt_skills.py`를 실행하고 다음 두 파일을 해당 Release에 첨부합니다.
+
+```text
+fluent-korean-chatgpt.zip
+fluent-korean-not-coding-chatgpt.zip
+```
+
+최신 Release의 고정 다운로드 주소는 다음과 같습니다.
+
+- [fluent-korean-chatgpt.zip](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-chatgpt.zip)
+- [fluent-korean-not-coding-chatgpt.zip](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-not-coding-chatgpt.zip)
+
+Release를 draft로 만든 경우에는 publish할 때 워크플로가 실행됩니다. Release asset은 같은 이름이 이미 있으면 새 패키지로 교체합니다.
+
+## 로컬에서 업로드용 ZIP 만들기
+
+Release를 사용하지 않고 직접 만들려면 다음을 실행합니다.
 
 ```bash
 python3 scripts/package_chatgpt_skills.py
@@ -34,7 +50,7 @@ dist/chatgpt/fluent-korean/skill.zip
 dist/chatgpt/fluent-korean-not-coding/skill.zip
 ```
 
-각 ZIP에는 한 개의 최상위 skill 디렉터리가 들어갑니다. 생성물인 `dist/`는 Git에 커밋하지 않습니다.
+각 ZIP에는 한 개의 최상위 skill 디렉터리가 들어갑니다. 생성물인 `dist/`는 Git에 커밋하지 않습니다. GitHub Release 워크플로는 이 두 파일을 각각 고유한 Release asset 이름으로 복사한 뒤 업로드합니다.
 
 ## ChatGPT에 설치하기
 

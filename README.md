@@ -8,7 +8,12 @@
 
 ## Claude Code 외 설치 방법
 
-ChatGPT에서 사용하려면 로컬 skill 경로를 연결하지 않습니다. 이 저장소의 `chatgpt/skills/`에서 업로드용 Skill을 생성하며, 저장소 루트에서 `python3 scripts/package_chatgpt_skills.py`를 실행하면 `dist/chatgpt/<skill 이름>/skill.zip`이 만들어집니다. ChatGPT에서 Plugins → Skills → Create → Upload from your computer를 선택해 해당 파일을 업로드합니다. 자세한 내용은 [docs/chatgpt.md](docs/chatgpt.md)를 참고하세요.
+ChatGPT에서 사용하려면 로컬 skill 경로를 연결하지 않습니다. 기본 배포 경로는 [GitHub Releases](https://github.com/novelKR/fluent-korean/releases)입니다. Release를 발행하면 GitHub Actions가 해당 태그의 output-style에서 ChatGPT용 Skill 두 변형을 검증·패키징하고 Release asset으로 자동 첨부합니다.
+
+- [fluent-korean-chatgpt.zip (최신 Release)](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-chatgpt.zip): 일반적인 한국어 응답과 코딩 작업용
+- [fluent-korean-not-coding-chatgpt.zip (최신 Release)](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-not-coding-chatgpt.zip): 코딩 지침이 없는 변형
+
+다운로드한 ZIP을 ChatGPT에서 Plugins → Skills → Create → Upload from your computer로 업로드합니다. Release 없이 로컬에서 직접 만들려면 저장소 루트에서 `python3 scripts/package_chatgpt_skills.py`를 실행합니다. 자세한 내용은 [docs/chatgpt.md](docs/chatgpt.md)를 참고하세요.
 
 직접 명령을 실행해도 됩니다. 원본 README와 같이, 현재 사용 중인 LLM에게 GitHub 링크가 포함된 한 문장을 건네는 방법도 사용할 수 있습니다.
 
