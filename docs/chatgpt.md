@@ -21,7 +21,7 @@ ChatGPT용 `SKILL.md`의 frontmatter에는 `name`과 `description`만 둡니다.
 
 ## GitHub Release에서 받기
 
-기본 배포 경로는 GitHub Release입니다. Release를 발행하면 `.github/workflows/chatgpt-skill-release.yml`이 `release.published` 이벤트에서 실행됩니다. 워크플로는 발행한 태그를 checkout한 뒤 `scripts/package_chatgpt_skills.py`를 실행하고 다음 두 파일을 해당 Release에 첨부합니다.
+기본 배포 경로는 GitHub Release입니다. `.github/workflows/chatgpt-skill-release.yml`은 `main` 브랜치에 변경이 반영될 때 자동으로 `chatgpt-latest` rolling Release를 만들고, `scripts/package_chatgpt_skills.py`를 실행해 다음 두 파일을 첨부합니다. 사용자가 별도의 버전 Release를 발행하면 `release.published` 이벤트에서도 실행되어 그 Release의 태그를 checkout한 뒤 같은 ZIP을 첨부합니다.
 
 ```text
 fluent-korean-chatgpt.zip
@@ -33,7 +33,7 @@ fluent-korean-not-coding-chatgpt.zip
 - [fluent-korean-chatgpt.zip](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-chatgpt.zip)
 - [fluent-korean-not-coding-chatgpt.zip](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-not-coding-chatgpt.zip)
 
-Release를 draft로 만든 경우에는 publish할 때 워크플로가 실행됩니다. Release asset은 같은 이름이 이미 있으면 새 패키지로 교체합니다.
+`chatgpt-latest`는 `main`의 최신 상태를 가리키는 rolling Release입니다. `main`이 갱신될 때 기존 rolling Release와 태그를 정리한 뒤 현재 커밋으로 다시 만들기 때문에 첫 Release가 없어도 자동으로 배포가 시작됩니다. 별도 Release를 draft로 만든 경우에는 publish할 때 워크플로가 실행됩니다. Release asset은 같은 이름이 이미 있으면 새 패키지로 교체합니다.
 
 ## 로컬에서 업로드용 ZIP 만들기
 
