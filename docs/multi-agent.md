@@ -1,17 +1,19 @@
 # 여러 에이전트에서 쓰기
 
-Claude Code의 output-style 원문은 `plugins/fluent-korean/output-styles/`에 그대로 있습니다. Cursor, Codex, Muse Code, grok-build, Gemini CLI, Pi, Kimi Code CLI가 함께 읽는 공용 형식은 [Agent Skills](https://agentskills.io/specification)의 `SKILL.md`이고, 이 저장소에서는 `.agents/skills/`에 둡니다.
+Claude Code의 output-style 원문은 `plugins/fluent-korean/output-styles/`에 그대로 있습니다. Cursor, Codex, Muse Code, grok-build, Gemini CLI, Pi, Kimi Code CLI가 함께 읽는 공용 형식은 [Agent Skills](https://agentskills.io/specification)의 `SKILL.md`이고, 이 저장소에서는 `.agents/skills/`에 둡니다. ChatGPT는 이 경로를 자동으로 읽는 대상으로 취급하지 않고, 별도 `chatgpt/skills/`에서 업로드용 Skill을 생성합니다. 자세한 내용은 [ChatGPT에서 쓰기](chatgpt.md)를 참고하세요.
 
 | skill | 언제 쓰나 |
 | --- | --- |
 | `fluent-korean` | 코딩 작업 중 한국어로 답하거나 한국어 결과물을 쓸 때. 설명에 맞춰 자동으로 열립니다. |
 | `fluent-korean-not-coding` | `/fluent-korean-not-coding`으로 직접 켰을 때. 코드를 직접 고치지 않는 글쓰기용이며, 자동으로 열리지 않습니다. |
 
-본문은 output-style에서 frontmatter만 뺀 원문입니다. 지침 문장을 이 문서나 skill 쪽에서 요약해 두지 않습니다. upstream을 가져온 뒤에는 아래 명령으로 skill을 다시 만듭니다.
+본문은 output-style에서 frontmatter만 뺀 원문입니다. 지침 문장을 이 문서나 skill 쪽에서 요약해 두지 않습니다. upstream을 가져온 뒤에는 아래 명령으로 Agent Skills와 ChatGPT용 Skill을 함께 다시 만듭니다.
 
 ```bash
 python3 scripts/sync_skills.py
 ```
+
+ChatGPT에 업로드할 ZIP까지 만들려면 `python3 scripts/package_chatgpt_skills.py`를 실행합니다.
 
 ## 사용자 전역 연결
 
