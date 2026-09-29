@@ -8,7 +8,7 @@
 
 ## Claude Code 외 설치 방법
 
-ChatGPT에서 사용하려면 로컬 skill 경로를 연결하지 않습니다. 기본 배포 경로는 [GitHub Releases](https://github.com/novelKR/fluent-korean/releases)입니다. Release를 발행하면 GitHub Actions가 해당 태그의 output-style에서 ChatGPT용 Skill 두 변형을 검증·패키징하고 Release asset으로 자동 첨부합니다.
+ChatGPT에서 사용하려면 로컬 skill 경로를 연결하지 않습니다. 기본 배포 경로는 [GitHub Releases](https://github.com/novelKR/fluent-korean/releases)입니다. `main`에 변경이 반영되면 GitHub Actions가 `chatgpt-latest` rolling Release를 자동으로 만들고 ChatGPT용 Skill 두 변형을 검증·패키징해 첨부합니다. 별도의 버전 Release를 발행한 경우에도 같은 ZIP을 그 Release에 자동으로 첨부합니다.
 
 - [fluent-korean-chatgpt.zip (최신 Release)](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-chatgpt.zip): 일반적인 한국어 응답과 코딩 작업용
 - [fluent-korean-not-coding-chatgpt.zip (최신 Release)](https://github.com/novelKR/fluent-korean/releases/latest/download/fluent-korean-not-coding-chatgpt.zip): 코딩 지침이 없는 변형

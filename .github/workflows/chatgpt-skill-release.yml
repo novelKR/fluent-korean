@@ -1,22 +1,30 @@
-name: Attach ChatGPT skills to release
+name: Publish ChatGPT skills
 
 on:
+  push:
+    branches:
+      - main
   release:
     types:
       - published
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+concurrency:
+  group: chatgpt-skill-release
+  cancel-in-progress: true
 
 jobs:
   package-chatgpt-skills:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out released tag
+      - name: Check out source
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.event_name == 'release' && github.event.release.tag_name || github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,7 +39,25 @@ jobs:
           cp dist/chatgpt/fluent-korean/skill.zip fluent-korean-chatgpt.zip
           cp dist/chatgpt/fluent-korean-not-coding/skill.zip fluent-korean-not-coding-chatgpt.zip
 
-      - name: Attach assets to release
+      - name: Publish rolling release
+        if: github.event_name != 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="chatgpt-latest"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release delete "$tag" --yes --cleanup-tag
+          fi
+          gh release create "$tag" \
+            fluent-korean-chatgpt.zip \
+            fluent-korean-not-coding-chatgpt.zip \
+            --target "$GITHUB_SHA" \
+            --title "ChatGPT Skills (latest)" \
+            --notes "Automatically generated from $GITHUB_SHA." \
+            --latest
+
+      - name: Attach assets to published release
+        if: github.event_name == 'release'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
